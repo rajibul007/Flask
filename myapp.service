@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp
+  namespace: default
+spec:
+  clusterIP: 172.16.1.188
+  ports:
+  - name: https
+    port: 5000
+    protocol: TCP
+    targetPort: 5000
+  sessionAffinity: None
+  type: ClusterIP
