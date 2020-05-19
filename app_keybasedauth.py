@@ -14,8 +14,8 @@ def randomString(stringLength):
 
 key=randomString(24)
 
-system("kubectl delete secret bash")
-sec=('kubectl create secret generic bash --from-literal=executor-key={}'.format(key) )
+system("kubectl delete secret bash --kubeconfig /root/.kube/config")
+sec=('kubectl create secret generic bash --from-literal=executor-key={} --kubeconfig /root/.kube/config '.format(key) )
 system(sec)
 
 app = Flask(__name__)
@@ -24,7 +24,8 @@ app.debug = True
 def out(apikey):
     if string.lower(apikey) != string.lower(key):
 
-        return jsonify({"error": "Invalid Key", "status_code": "401"  }) , 401
+#        return jsonify({"error": key , status_code": "401"  }) , 401
+         return key
        
 
 
@@ -33,7 +34,7 @@ def out(apikey):
     cmd  = data["cmd"]
     out = system(cmd)
     if system(cmd) != 0 :
-             return jsonify({"message": "BAD SHELL COMMAND" , "Eroor": out }),400
+             return jsonify({"message": "BAD SHELL COMMAND" , "Error": out }),400
 
     l = commands.getoutput(cmd)
     print(type(l))
